@@ -13,7 +13,6 @@ import ratingControlTester from './ratingControlTester';
 import TextDisplay, { textTester } from './TextDisplay';
 import { makeStyles } from '@mui/styles';
 import { useFigTreeEvaluator } from './useFigTreeEvaluator';
-// import { ErrorObject } from 'ajv';
 
 const useStyles = makeStyles({
   container: {
@@ -59,7 +58,6 @@ const App = () => {
   const [data, setData] = useState<any>(initialData);
   const stringifiedData = useMemo(() => JSON.stringify(data, null, 2), [data]);
   const { evaluatedSchema, evaluatedUiSchema } = useFigTreeEvaluator(data, schema, uischema);
-  const [additionalErrors, setAdditionalErrors] = useState<any[]>([]);
 
   const clearData = () => {
     setData({});
@@ -99,10 +97,8 @@ const App = () => {
               renderers={renderers}
               cells={materialCells}
               onChange={({ errors, data }) => setData(data)}
-              // additionalErrors={additionalErrors}
             />
           </div>
-          {/* <Button onClick={addAdditionalError}>Add Additional Error</Button> */}
         </Grid>
       </Grid>
     </Fragment>

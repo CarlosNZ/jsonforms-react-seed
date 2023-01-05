@@ -2,6 +2,7 @@
   "name": "jsonforms-react-seed",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://carlosnz.github.io/jsonforms-with-figtree-demo",
   "dependencies": {
     "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
@@ -16,7 +17,7 @@
     "@types/node": "^14.14.14",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
-    "fig-tree-evaluator": "^2.3.1",
+    "fig-tree-evaluator": "^2.3.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "typescript": "^4.1.3"
@@ -24,6 +25,7 @@
   "devDependencies": {
     "@types/jest": "^28.1.6",
     "cypress": "^6.1.0",
+    "gh-pages": "^4.0.0",
     "react-scripts": "^5.0.1",
     "start-server-and-test": "^1.11.6"
   },
@@ -33,7 +35,9 @@
     "test": "react-scripts test --env=jsdom",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --config video=false",
-    "cypress:ci": "BROWSER=none start-server-and-test start http://localhost:3000 cypress:run"
+    "cypress:ci": "BROWSER=none start-server-and-test start http://localhost:3000 cypress:run",
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
