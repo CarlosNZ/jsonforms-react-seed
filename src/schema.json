@@ -1,32 +1,63 @@
 {
   "type": "object",
   "properties": {
-    "name": {
+    "email": { "type": "string", "pattern": "^\\S+@\\S+\\.\\S+$" },
+    "country": {
       "type": "string",
-      "minLength": 1
+      "title": "Select your country",
+      "enum": {
+        "operator": "GET",
+        "url": "https://countriesnow.space/api/v0.1/countries/flag/unicode",
+        "returnProperty": "data.name"
+      }
     },
-    "description": {
-      "title": "Long Description",
-      "type": "string"
+    "city": {
+      "type": "string",
+      "title": "Select your city",
+      "enum": {
+        "operator": "?",
+        "condition": { "operator": "getData", "property": "country", "fallback": false },
+        "valueIfTrue": {
+          "operator": "POST",
+          "url": "https://countriesnow.space/api/v0.1/countries/cities",
+          "parameters": { "country": { "operator": "getData", "property": "country" } },
+          "returnProperty": "data",
+          "fallback": ["Loading"]
+        },
+        "valueIfFalse": ["Please select a country first"]
+      }
     },
-    "done": {
+    "multiSelect": {
+      "type": "array",
+      "uniqueItems": true,
+      "title": "Please choose",
+      "items": {
+        "type": "string",
+        "enum": ["Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf", "Hotel", "India", "Lima"]
+      }
+    },
+    "number1": {
+      "type": "integer"
+    },
+    "number2": {
+      "type": "integer"
+    },
+    "vegetarian": {
       "type": "boolean"
     },
-    "due_date": {
+    "mealChoice": {
+      "type": "string",
+      "enum": {
+        "operator": "?",
+        "condition": { "operator": "getData", "property": "vegetarian" },
+        "valueIfTrue": ["Tomato soup", "Vegetable lasagna"],
+        "valueIfFalse": ["Shepherd's pie", "Roast lamb"]
+      }
+    },
+    "date": {
       "type": "string",
       "format": "date"
-    },
-    "rating": {
-      "type": "integer",
-      "maximum": 5
-    },
-    "recurrence": {
-      "type": "string",
-      "enum": ["Never", "Daily", "Weekly", "Monthly"]
-    },
-    "recurrence_interval": {
-      "type": "integer"
     }
   },
-  "required": ["name", "due_date"]
+  "required": ["country", "city", "date"]
 }

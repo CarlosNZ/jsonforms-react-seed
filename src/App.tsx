@@ -7,13 +7,13 @@ import logo from './logo.svg';
 import './App.css';
 import schema from './schema.json';
 import uischema from './uischema.json';
-import {
-  materialCells,
-  materialRenderers,
-} from '@jsonforms/material-renderers';
+import { materialCells, materialRenderers } from '@jsonforms/material-renderers';
 import RatingControl from './RatingControl';
 import ratingControlTester from './ratingControlTester';
+import TextDisplay, { textTester } from './TextDisplay';
 import { makeStyles } from '@mui/styles';
+import { useFigTreeEvaluator } from './useFigTreeEvaluator';
+// import { ErrorObject } from 'ajv';
 
 const useStyles = makeStyles({
   container: {
@@ -42,23 +42,24 @@ const useStyles = makeStyles({
 });
 
 const initialData = {
-  name: 'Send email to Adrian',
-  description: 'Confirm if you have passed the subject\nHereby ...',
-  done: true,
-  recurrence: 'Daily',
-  rating: 3,
+  number1: 2,
+  number2: 2,
+  vegetarian: false,
 };
 
 const renderers = [
   ...materialRenderers,
   //register custom renderers
   { tester: ratingControlTester, renderer: RatingControl },
+  { tester: textTester, renderer: TextDisplay },
 ];
 
 const App = () => {
   const classes = useStyles();
   const [data, setData] = useState<any>(initialData);
   const stringifiedData = useMemo(() => JSON.stringify(data, null, 2), [data]);
+  const { evaluatedSchema, evaluatedUiSchema } = useFigTreeEvaluator(data, schema, uischema);
+  const [additionalErrors, setAdditionalErrors] = useState<any[]>([]);
 
   const clearData = () => {
     setData({});
@@ -70,16 +71,11 @@ const App = () => {
         <header className='App-header'>
           <img src={logo} className='App-logo' alt='logo' />
           <h1 className='App-title'>Welcome to JSON Forms with React</h1>
-          <p className='App-intro'>More Forms. Less Code.</p>
+          <p className='App-intro'>Enhanced with FigTree Evaluator</p>
         </header>
       </div>
 
-      <Grid
-        container
-        justifyContent={'center'}
-        spacing={1}
-        className={classes.container}
-      >
+      <Grid container justifyContent={'center'} spacing={1} className={classes.container}>
         <Grid item sm={6}>
           <Typography variant={'h4'} className={classes.title}>
             Bound data
@@ -87,12 +83,7 @@ const App = () => {
           <div className={classes.dataContent}>
             <pre id='boundData'>{stringifiedData}</pre>
           </div>
-          <Button
-            className={classes.resetButton}
-            onClick={clearData}
-            color='primary'
-            variant='contained'
-          >
+          <Button className={classes.resetButton} onClick={clearData} color='primary' variant='contained'>
             Clear data
           </Button>
         </Grid>
@@ -102,14 +93,16 @@ const App = () => {
           </Typography>
           <div className={classes.demoform}>
             <JsonForms
-              schema={schema}
-              uischema={uischema}
+              schema={evaluatedSchema}
+              uischema={evaluatedUiSchema}
               data={data}
               renderers={renderers}
               cells={materialCells}
               onChange={({ errors, data }) => setData(data)}
+              // additionalErrors={additionalErrors}
             />
           </div>
+          {/* <Button onClick={addAdditionalError}>Add Additional Error</Button> */}
         </Grid>
       </Grid>
     </Fragment>

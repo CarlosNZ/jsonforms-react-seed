@@ -2,54 +2,151 @@
   "type": "VerticalLayout",
   "elements": [
     {
-      "type": "Control",
-      "label": "Completed",
-      "scope": "#/properties/done"
-    },
-    {
-      "type": "Control",
-      "scope": "#/properties/name"
-    },
-    {
-      "type": "HorizontalLayout",
+      "type": "Group",
       "elements": [
         {
           "type": "Control",
-          "scope": "#/properties/due_date"
+          "scope": "#/properties/email"
+        },
+        { "type": "Text", "text": "Where are you from?" },
+        {
+          "type": "Control",
+          "scope": "#/properties/country"
         },
         {
           "type": "Control",
-          "scope": "#/properties/rating"
-        }
-      ]
-    },
-    {
-      "type": "HorizontalLayout",
-      "elements": [
-        {
-          "type": "Control",
-          "scope": "#/properties/recurrence"
+          "scope": "#/properties/city"
         },
         {
-          "type": "Control",
-          "scope": "#/properties/recurrence_interval",
-          "rule": {
-            "effect": "HIDE",
+          "type": "Text",
+          "text": {
+            "operator": "?",
             "condition": {
-              "type": "LEAF",
-              "scope": "#/properties/recurrence",
-              "expectedValue": "Never"
-            }
+              "operator": "AND",
+              "values": [
+                { "operator": "getData", "property": "city", "fallback": false },
+                { "operator": "getData", "property": "country", "fallback": false }
+              ]
+            },
+            "valueIfTrue": {
+              "operator": "stringSubstitution",
+              "string": "You are from %1, %2",
+              "replacements": [
+                { "operator": "getData", "property": "city" },
+                { "operator": "getData", "property": "country" }
+              ]
+            },
+            "valueIfFalse": ""
           }
         }
       ]
     },
     {
-      "type": "Control",
-      "scope": "#/properties/description",
-      "options": {
-        "multi": true
-      }
+      "type": "Group",
+      "elements": [
+        { "type": "Text", "text": "Please select some items:" },
+        {
+          "type": "VerticalLayout",
+          "label": "Select some items",
+          "elements": [
+            {
+              "type": "Control",
+              "label": "Select multiple",
+              "scope": "#/properties/multiSelect"
+            }
+          ]
+        },
+        {
+          "type": "Text",
+          "text": {
+            "operator": "stringSubstitution",
+            "string": "You have selected %1 items",
+            "replacements": [
+              { "operator": "count", "values": { "operator": "getData", "property": "multiSelect" }, "fallback": 0 }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "type": "Group",
+      "elements": [
+        {
+          "type": "HorizontalLayout",
+          "elements": [
+            {
+              "type": "Control",
+              "scope": "#/properties/number1"
+            },
+            {
+              "type": "Control",
+              "scope": "#/properties/number2"
+            }
+          ]
+        },
+        {
+          "type": "Text",
+          "text": {
+            "operator": "stringSubstitution",
+            "string": "%1 plus %2 equals %3",
+            "replacements": ["$num1", "$num2", { "operator": "+", "values": ["$num1", "$num2"] }],
+            "$num1": { "operator": "getData", "property": "number1", "fallback": 0 },
+            "$num2": { "operator": "getData", "property": "number2", "fallback": 0 }
+          }
+        }
+      ]
+    },
+    {
+      "type": "Group",
+      "elements": [
+        {
+          "type": "HorizontalLayout",
+          "elements": [
+            {
+              "type": "VerticalLayout",
+              "elements": [
+                {
+                  "type": "Control",
+                  "label": "Are you vegetarian?",
+                  "scope": "#/properties/vegetarian"
+                },
+                {
+                  "type": "Control",
+                  "scope": "#/properties/mealChoice"
+                }
+              ]
+            },
+            {
+              "type": "VerticalLayout",
+              "elements": [
+                {
+                  "type": "Control",
+                  "scope": "#/properties/date"
+                },
+                {
+                  "type": "Text",
+                  "text": {
+                    "operator": "stringSubstitution",
+                    "string": "The selected date is %1",
+                    "replacements": [
+                      {
+                        "operator": "match",
+                        "match": {
+                          "operator": "customFunctions",
+                          "functionPath": "checkDate",
+                          "args": [{ "operator": "getData", "property": "date" }]
+                        },
+                        "branches": { "-1": "in the past", "0": "today", "1": "in the future" }
+                      }
+                    ],
+                    "fallback": ""
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }
