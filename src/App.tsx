@@ -3,7 +3,6 @@ import { JsonForms } from '@jsonforms/react';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import logo from './logo.svg';
 import './App.css';
 import schema from './schema.json';
 import uischema from './uischema.json';
@@ -68,7 +67,7 @@ const App = () => {
     <Fragment>
       <div className='App'>
         <header className='App-header'>
-          <img src={logo} className='App-logo' alt='logo' />
+          {/* <img src={logo} className='App-logo' alt='logo' /> */}
           <h1 className='App-title'>Welcome to JSON Forms with React</h1>
           <p className='App-intro'>
             Enhanced with{' '}
@@ -106,6 +105,12 @@ const App = () => {
             />
           </div>
         </Grid>
+        <Typography fontSize='80%'>
+          Repository for this demo:{' '}
+          <Link href='https://github.com/CarlosNZ/jsonforms-with-figtree-demo' target='_blank'>
+            Github
+          </Link>
+        </Typography>
       </Grid>
     </Fragment>
   );
