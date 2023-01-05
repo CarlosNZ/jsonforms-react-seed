@@ -13,6 +13,7 @@ import ratingControlTester from './ratingControlTester';
 import TextDisplay, { textTester } from './TextDisplay';
 import { makeStyles } from '@mui/styles';
 import { useFigTreeEvaluator } from './useFigTreeEvaluator';
+import { Link } from '@mui/material';
 
 const useStyles = makeStyles({
   container: {
@@ -69,7 +70,12 @@ const App = () => {
         <header className='App-header'>
           <img src={logo} className='App-logo' alt='logo' />
           <h1 className='App-title'>Welcome to JSON Forms with React</h1>
-          <p className='App-intro'>Enhanced with FigTree Evaluator</p>
+          <p className='App-intro'>
+            Enhanced with{' '}
+            <Link href='https://github.com/CarlosNZ/fig-tree-evaluator' target='_blank'>
+              FigTree Evaluator
+            </Link>
+          </p>
         </header>
       </div>
 

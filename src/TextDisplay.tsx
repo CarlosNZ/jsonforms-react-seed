@@ -1,10 +1,13 @@
+/*
+Simple component for displaying text information in JSON Forms
+*/
+
 import { JsonSchema, UISchemaElement, rankWith, uiTypeIs } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import { Typography } from '@mui/material';
 
 interface TextDisplayProps {
   data: any;
-  // handleChange(path: string, value: any): void;
   path: string;
   schema: JsonSchema;
   uischema: UISchemaElement & { text: string };
@@ -16,8 +19,6 @@ const TextDisplay = ({ data, path, schema, uischema }: TextDisplayProps) => {
       <Typography>{uischema.text}</Typography>
     </div>
   );
-
-  // <Rating value={data} updateValue={(newValue: number) => handleChange(path, newValue)} />;
 };
 
 export default withJsonFormsControlProps(TextDisplay as any);

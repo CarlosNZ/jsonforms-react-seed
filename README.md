@@ -1,31 +1,15 @@
-# JSON Forms React seed App
+# JSON Forms with FigTree Evaluator
 
-This seed demonstrates how to use [JSON Forms](https://jsonforms.io) with React in order to render a simple form for displaying a task entity.
+Based on [JSON Forms React Seed App](https://github.com/eclipsesource/jsonforms-react-seed), this repo demonstrates one way to integrate [JSON Forms](https://jsonforms.io) with [FigTree Evaluator](https://github.com/CarlosNZ/fig-tree-evaluator) in order to allow more complex form logic (such as dynamic drop-down menus and dynamic text labels).
 
-It is based on `create-react-app` and only contains minor modifications.
+A published demo of this repo is available at https://carlosnz.github.io/jsonforms-with-figtree-demo.
 
-- Execute `npm ci` to install the prerequisites. If you want to have the latest released versions use `npm install`.
-- Execute `npm start` to start the application.
+- Run `yarn install` (or `npm` equivalent) to install the dependencies
+- Run `yarn start` (or `npm start`) to launch the demo locally
 
-Browse to http://localhost:3000 to see the application in action.
+Please see [FigTree documentation](https://github.com/CarlosNZ/fig-tree-evaluator) for detailed information on how to create FigTree expressions.
 
-## File Structure
-
-Let's briefly have a look at the most important files:
-
-- `src/schema.json` contains the JSON schema (also referred to as 'data schema')
-- `src/uischema.json` contains the UI schema
-- `src/index.tsx` is the entry point of the application. We also customize the Material UI theme to give each control more space.
-- `src/App.tsx` is the main app component and makes use of the `JsonForms` component in order to render a form.
-
-The [data schema](src/schema.json) defines the structure of a Task: it contains attributes such as title, description, due date and so on.
-
-The [corresponding UI schema](src/uischema.json) specifies controls for each property and puts them into a vertical layout that in turn contains two horizontal layouts.
-
-## Rendering JSON Forms
-
-JSON Forms is rendered by importing and using the `JsonForms` component and directly handing over the `schema`, `uischema`, `data`, `renderer` and `cell` props. We listen to changes in the form via the `onChange` callback.
-
-## Custom renderers
-
-Please see [our corresponding tutorial](https://jsonforms.io/docs/tutorial) on how to add custom renderers.
+The main additions here from the original JSON Forms Seed App are:
+- "TextDisplay" renderer for simply displaying text-only information in the form
+- "useFigTreeEvaluator" hook, which evaluates both the **json schema** (`schema.json`) and **ui schema** (`uischema.json`) using FigTree. It is re-evaluated whenever `data` (the form state data) changes.
+- `schema.json` and `uischema.json` have a number of dynamic elements using FigTree expressions.
