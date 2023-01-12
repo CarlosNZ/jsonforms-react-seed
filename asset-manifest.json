@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/jsonforms-with-figtree-demo/static/css/main.d7a35098.css",
-    "main.js": "/jsonforms-with-figtree-demo/static/js/main.e5e4cb8d.js",
+    "main.js": "/jsonforms-with-figtree-demo/static/js/main.b60867df.js",
     "index.html": "/jsonforms-with-figtree-demo/index.html",
     "main.d7a35098.css.map": "/jsonforms-with-figtree-demo/static/css/main.d7a35098.css.map",
-    "main.e5e4cb8d.js.map": "/jsonforms-with-figtree-demo/static/js/main.e5e4cb8d.js.map"
+    "main.b60867df.js.map": "/jsonforms-with-figtree-demo/static/js/main.b60867df.js.map"
   },
   "entrypoints": [
     "static/css/main.d7a35098.css",
-    "static/js/main.e5e4cb8d.js"
+    "static/js/main.b60867df.js"
   ]
 }
