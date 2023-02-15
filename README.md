@@ -12,4 +12,5 @@ Please see [FigTree documentation](https://github.com/CarlosNZ/fig-tree-evaluato
 The main additions here from the original JSON Forms Seed App are:
 - "TextDisplay" renderer for simply displaying text-only information in the form
 - "useFigTreeEvaluator" hook, which evaluates both the **json schema** (`schema.json`) and **ui schema** (`uischema.json`) using FigTree. It is re-evaluated whenever `data` (the form state data) changes.
+- Evaluate `visible` and `enabled` parameters on each element (in UI Schema), which are compiled into JSON Forms [rules](https://jsonforms.io/docs/uischema/rules). This allows the visible/enabled rules to be specified using FigTree expressions.
 - `schema.json` and `uischema.json` have a number of dynamic elements using FigTree expressions.
