@@ -5083,10 +5083,10 @@ fd-slicer@~1.1.0:
   dependencies:
     pend "~1.2.0"
 
-fig-tree-evaluator@latest:
-  version "2.5.2"
-  resolved "https://registry.yarnpkg.com/fig-tree-evaluator/-/fig-tree-evaluator-2.5.2.tgz#e58ace8128e1e69d9cd13aca3e2707ebb179cf3f"
-  integrity sha512-1z2PCzzdHe53+T7zVDemudvLtb2kQUYrCKKooOi8QB0jtzxdzNlmLrAYXjMBy135ylvqM6qSb1uzZu9w9OU/gw==
+fig-tree-evaluator@*:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/fig-tree-evaluator/-/fig-tree-evaluator-2.6.0.tgz#7eceabe6caed24ecb8217e17d5abc682ea672e68"
+  integrity sha512-4gwU//4R2+5u0wlGyfkTgZZrfuSJOGlneqs9fM8E2uA/xUMbOOiFz83xIt14WsTsVeeb05wYZ0mSaORpElQSdA==
   dependencies:
     axios "^0.27.2"
     change-case "^4.1.2"
@@ -7449,7 +7449,12 @@ object-keys@^1.1.1:
   resolved "https://registry.yarnpkg.com/object-keys/-/object-keys-1.1.1.tgz#1c47f272df277f3b1daf061677d9c82e2322c60e"
   integrity sha512-NuAESUOUMrlIXOfHKzD6bpPu3tYt3xvjNdRIQ+FeT0lNb4K8WR70CaDxhuNguS2XG+GjkyMwOzsN5ZktImfhLA==
 
-object-property-extractor@^1.0.6:
+object-property-assigner@*:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/object-property-assigner/-/object-property-assigner-0.9.0.tgz#36f2590968a21b0c6441ae02bda9abfa8c2d0da5"
+  integrity sha512-aYgYZmStRBIb3LcSa85WWV9l72ABSNwm4KqwN73VZvP4ZNFdmoHmLBpmNmUlqd8Te+QnlvZEQ5rdIBWuYeF2NQ==
+
+object-property-extractor@*, object-property-extractor@^1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/object-property-extractor/-/object-property-extractor-1.0.6.tgz#823dabe27e646fd6922db5874191a4bd9962f886"
   integrity sha512-75926oo0hL87mquCqKHLgWTBW2fOEXIZy3CuHl3hgpruBRJvCMUMGuowm+ipOiDNHV+85pcR7xpOrTutNe4G5Q==

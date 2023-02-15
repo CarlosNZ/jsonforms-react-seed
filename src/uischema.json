@@ -15,7 +15,8 @@
         },
         {
           "type": "Control",
-          "scope": "#/properties/city"
+          "scope": "#/properties/city",
+          "visible": { "operator": "getData", "property": "country", "fallback": false, "outputType": "bool" }
         },
         {
           "type": "Text",
@@ -44,7 +45,27 @@
     {
       "type": "Group",
       "elements": [
-        { "type": "Text", "text": "Please select some items:" },
+        {
+          "type": "Text",
+          "text": {
+            "operator": "?",
+            "condition": {
+              "operator": ">",
+              "values": [
+                { "operator": "count", "values": { "operator": "getData", "property": "multiSelect", "fallback": [] } },
+                0
+              ]
+            },
+            "valueIfTrue": {
+              "operator": "stringSubstitution",
+              "string": "You have selected %1 items",
+              "replacements": [
+                { "operator": "count", "values": { "operator": "getData", "property": "multiSelect" }, "fallback": 0 }
+              ]
+            },
+            "valueIfFalse": "Please select some items"
+          }
+        },
         {
           "type": "VerticalLayout",
           "label": "Select some items",
@@ -55,16 +76,6 @@
               "scope": "#/properties/multiSelect"
             }
           ]
-        },
-        {
-          "type": "Text",
-          "text": {
-            "operator": "stringSubstitution",
-            "string": "You have selected %1 items",
-            "replacements": [
-              { "operator": "count", "values": { "operator": "getData", "property": "multiSelect" }, "fallback": 0 }
-            ]
-          }
         }
       ]
     },
@@ -121,7 +132,20 @@
               "elements": [
                 {
                   "type": "Control",
-                  "scope": "#/properties/date"
+                  "scope": "#/properties/date",
+                  "$isEnabled": {
+                    "operator": "getData",
+                    "property": "mealChoice",
+                    "fallback": false,
+                    "outputType": "bool"
+                  },
+                  "label": {
+                    "operator": "?",
+                    "condition": "$isEnabled",
+                    "valueIfTrue": "Select a date",
+                    "valueIfFalse": "Waiting for meal choice..."
+                  },
+                  "enabled": "$isEnabled"
                 },
                 {
                   "type": "Text",
@@ -140,7 +164,8 @@
                       }
                     ],
                     "fallback": ""
-                  }
+                  },
+                  "visible": { "operator": "getData", "property": "date", "fallback": false, "outputType": "bool" }
                 }
               ]
             }
