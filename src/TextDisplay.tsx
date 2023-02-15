@@ -11,14 +11,15 @@ interface TextDisplayProps {
   path: string;
   schema: JsonSchema;
   uischema: UISchemaElement & { text: string };
+  visible: boolean;
 }
 
-const TextDisplay = ({ data, path, schema, uischema }: TextDisplayProps) => {
-  return (
+const TextDisplay = ({ data, path, schema, uischema, visible }: TextDisplayProps) => {
+  return visible ? (
     <div>
       <Typography>{uischema.text}</Typography>
     </div>
-  );
+  ) : null;
 };
 
 export default withJsonFormsControlProps(TextDisplay as any);

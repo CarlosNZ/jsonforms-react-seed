@@ -15,7 +15,8 @@
         },
         {
           "type": "Control",
-          "scope": "#/properties/city"
+          "scope": "#/properties/city",
+          "visible": { "operator": "getData", "property": "country", "outputType": "bool" }
         },
         {
           "type": "Text",
@@ -44,7 +45,24 @@
     {
       "type": "Group",
       "elements": [
-        { "type": "Text", "text": "Please select some items:" },
+        {
+          "type": "Text",
+          "text": {
+            "operator": "?",
+            "condition": {
+              "operator": ">",
+              "values": [{ "operator": "count", "values": { "operator": "getData", "property": "multiSelect" } }, 0]
+            },
+            "valueIfTrue": {
+              "operator": "stringSubstitution",
+              "string": "You have selected %1 items",
+              "replacements": [
+                { "operator": "count", "values": { "operator": "getData", "property": "multiSelect" }, "fallback": 0 }
+              ]
+            },
+            "valueIfFalse": "Please select some items"
+          }
+        },
         {
           "type": "VerticalLayout",
           "label": "Select some items",
@@ -55,16 +73,6 @@
               "scope": "#/properties/multiSelect"
             }
           ]
-        },
-        {
-          "type": "Text",
-          "text": {
-            "operator": "stringSubstitution",
-            "string": "You have selected %1 items",
-            "replacements": [
-              { "operator": "count", "values": { "operator": "getData", "property": "multiSelect" }, "fallback": 0 }
-            ]
-          }
         }
       ]
     },
