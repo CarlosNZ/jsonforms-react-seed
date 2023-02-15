@@ -112,7 +112,8 @@
                 },
                 {
                   "type": "Control",
-                  "scope": "#/properties/mealChoice"
+                  "scope": "#/properties/mealChoice",
+                  "visible": { "operator": "getData", "property": "vegetarian" }
                 }
               ]
             },
