@@ -133,23 +133,19 @@
                 {
                   "type": "Control",
                   "scope": "#/properties/date",
-                  "label": {
-                    "operator": "?",
-                    "condition": {
-                      "operator": "getData",
-                      "property": "mealChoice",
-                      "fallback": false,
-                      "outputType": "bool"
-                    },
-                    "valueIfTrue": "Select a date",
-                    "valueIfFalse": "Waiting for meal choice..."
-                  },
-                  "enabled": {
+                  "$isEnabled": {
                     "operator": "getData",
                     "property": "mealChoice",
                     "fallback": false,
                     "outputType": "bool"
-                  }
+                  },
+                  "label": {
+                    "operator": "?",
+                    "condition": "$isEnabled",
+                    "valueIfTrue": "Select a date",
+                    "valueIfFalse": "Waiting for meal choice..."
+                  },
+                  "enabled": "$isEnabled"
                 },
                 {
                   "type": "Text",
