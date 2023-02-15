@@ -16,7 +16,7 @@
         {
           "type": "Control",
           "scope": "#/properties/city",
-          "visible": { "operator": "getData", "property": "country", "outputType": "bool" }
+          "visible": { "operator": "getData", "property": "country", "fallback": false, "outputType": "bool" }
         },
         {
           "type": "Text",
@@ -51,7 +51,10 @@
             "operator": "?",
             "condition": {
               "operator": ">",
-              "values": [{ "operator": "count", "values": { "operator": "getData", "property": "multiSelect" } }, 0]
+              "values": [
+                { "operator": "count", "values": { "operator": "getData", "property": "multiSelect", "fallback": [] } },
+                0
+              ]
             },
             "valueIfTrue": {
               "operator": "stringSubstitution",
@@ -120,8 +123,7 @@
                 },
                 {
                   "type": "Control",
-                  "scope": "#/properties/mealChoice",
-                  "visible": { "operator": "getData", "property": "vegetarian" }
+                  "scope": "#/properties/mealChoice"
                 }
               ]
             },
@@ -130,7 +132,24 @@
               "elements": [
                 {
                   "type": "Control",
-                  "scope": "#/properties/date"
+                  "scope": "#/properties/date",
+                  "label": {
+                    "operator": "?",
+                    "condition": {
+                      "operator": "getData",
+                      "property": "mealChoice",
+                      "fallback": false,
+                      "outputType": "bool"
+                    },
+                    "valueIfTrue": "Select a date",
+                    "valueIfFalse": "Waiting for meal choice..."
+                  },
+                  "enabled": {
+                    "operator": "getData",
+                    "property": "mealChoice",
+                    "fallback": false,
+                    "outputType": "bool"
+                  }
                 },
                 {
                   "type": "Text",
@@ -149,7 +168,8 @@
                       }
                     ],
                     "fallback": ""
-                  }
+                  },
+                  "visible": { "operator": "getData", "property": "date", "fallback": false, "outputType": "bool" }
                 }
               ]
             }

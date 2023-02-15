@@ -14,7 +14,8 @@ interface TextDisplayProps {
   visible: boolean;
 }
 
-const TextDisplay = ({ data, path, schema, uischema, visible }: TextDisplayProps) => {
+const TextDisplay = (props: TextDisplayProps) => {
+  const { uischema, visible } = props;
   return visible ? (
     <div>
       <Typography>{uischema.text}</Typography>
