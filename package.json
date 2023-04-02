@@ -17,7 +17,7 @@
     "@types/node": "^14.14.14",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
-    "fig-tree-evaluator": "*",
+    "fig-tree-evaluator": "^2.8.4",
     "object-property-assigner": "*",
     "object-property-extractor": "*",
     "react": "^17.0.1",

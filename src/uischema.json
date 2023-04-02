@@ -16,28 +16,26 @@
         {
           "type": "Control",
           "scope": "#/properties/city",
-          "visible": { "operator": "getData", "property": "country", "fallback": false, "outputType": "bool" }
+          "visible": { "$getData": "country", "fallback": false, "outputType": "bool" }
         },
         {
           "type": "Text",
           "text": {
-            "operator": "?",
-            "condition": {
-              "operator": "AND",
-              "values": [
-                { "operator": "getData", "property": "city", "fallback": false },
-                { "operator": "getData", "property": "country", "fallback": false }
-              ]
-            },
-            "valueIfTrue": {
-              "operator": "stringSubstitution",
-              "string": "You are from %1, %2",
-              "replacements": [
-                { "operator": "getData", "property": "city" },
-                { "operator": "getData", "property": "country" }
-              ]
-            },
-            "valueIfFalse": ""
+            "$?": {
+              "condition": {
+                "$and": [
+                  { "$getData": "city", "fallback": false },
+                  { "$getData": "country", "fallback": false }
+                ]
+              },
+              "valueIfTrue": {
+                "$stringSubstitution": {
+                  "string": "You are from %1, %2",
+                  "replacements": ["$getData(city)", "$getData(country)"]
+                }
+              },
+              "valueIfFalse": ""
+            }
           }
         }
       ]
