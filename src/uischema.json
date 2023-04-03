@@ -46,22 +46,16 @@
         {
           "type": "Text",
           "text": {
-            "operator": "?",
-            "condition": {
-              "operator": ">",
-              "values": [
-                { "operator": "count", "values": { "operator": "getData", "property": "multiSelect", "fallback": [] } },
-                0
-              ]
-            },
-            "valueIfTrue": {
-              "operator": "stringSubstitution",
-              "string": "You have selected %1 items",
-              "replacements": [
-                { "operator": "count", "values": { "operator": "getData", "property": "multiSelect" }, "fallback": 0 }
-              ]
-            },
-            "valueIfFalse": "Please select some items"
+            "$?": {
+              "condition": { "$>": [{ "$count": { "$getData": "multiSelect", "fallback": [] } }, 0] },
+              "valueIfTrue": {
+                "$stringSubstitution": {
+                  "string": "You have selected %1 items",
+                  "replacements": [{ "$count": { "$getData": "multiSelect" }, "fallback": 0 }]
+                }
+              },
+              "valueIfFalse": "Please select some items"
+            }
           }
         },
         {
@@ -96,11 +90,12 @@
         {
           "type": "Text",
           "text": {
-            "operator": "stringSubstitution",
-            "string": "%1 plus %2 equals %3",
-            "replacements": ["$num1", "$num2", { "operator": "+", "values": ["$num1", "$num2"] }],
-            "$num1": { "operator": "getData", "property": "number1", "fallback": 0 },
-            "$num2": { "operator": "getData", "property": "number2", "fallback": 0 }
+            "$stringSubstitution": {
+              "string": "%1 plus %2 equals %3",
+              "replacements": ["$num1", "$num2", { "$+": ["$num1", "$num2"] }]
+            },
+            "$num1": { "$getData": "number1", "fallback": 0 },
+            "$num2": { "$getData": "number2", "fallback": 0 }
           }
         }
       ]
@@ -131,36 +126,33 @@
                 {
                   "type": "Control",
                   "scope": "#/properties/date",
-                  "$isEnabled": {
-                    "operator": "getData",
-                    "property": "mealChoice",
-                    "fallback": false,
-                    "outputType": "bool"
-                  },
+                  "$isEnabled": { "$getData": "mealChoice", "fallback": false, "outputType": "bool" },
                   "label": {
-                    "operator": "?",
-                    "condition": "$isEnabled",
-                    "valueIfTrue": "Select a date",
-                    "valueIfFalse": "Waiting for meal choice..."
+                    "$?": {
+                      "condition": "$isEnabled",
+                      "valueIfTrue": "Select a date",
+                      "valueIfFalse": "Waiting for meal choice..."
+                    }
                   },
                   "enabled": "$isEnabled"
                 },
                 {
                   "type": "Text",
                   "text": {
-                    "operator": "stringSubstitution",
-                    "string": "The selected date is %1",
-                    "replacements": [
-                      {
-                        "operator": "match",
-                        "match": {
-                          "operator": "customFunctions",
-                          "functionPath": "checkDate",
-                          "args": [{ "operator": "getData", "property": "date" }]
-                        },
-                        "branches": { "-1": "in the past", "0": "today", "1": "in the future" }
-                      }
-                    ],
+                    "$stringSubstitution": {
+                      "string": "The selected date is %1",
+                      "replacements": [
+                        {
+                          "operator": "match",
+                          "match": {
+                            "operator": "customFunctions",
+                            "functionPath": "checkDate",
+                            "args": [{ "operator": "getData", "property": "date" }]
+                          },
+                          "branches": { "0": "today", "1": "in the future", "-1": "in the past" }
+                        }
+                      ]
+                    },
                     "fallback": ""
                   },
                   "visible": { "operator": "getData", "property": "date", "fallback": false, "outputType": "bool" }

@@ -39,7 +39,7 @@ export const useFigTreeEvaluator = (data: any, schema: UnevaluatedSchema, uische
   return evaluatedSchemas;
 };
 
-const isObject = (value: unknown) => value instanceof Object && value !== null;
+const isObject = (value: unknown): value is object => value instanceof Object && value !== null;
 
 const traverseSchema = (schema: UnevaluatedSchema | UnevaluatedSchema[], paths: string[], currentPath: string) => {
   if (Array.isArray(schema)) {
