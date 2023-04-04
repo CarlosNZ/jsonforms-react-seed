@@ -1,24 +1,25 @@
-import { JsonSchema, UISchemaElement } from '@jsonforms/core';
+import { JsonSchema, Layout, UISchemaElement } from '@jsonforms/core';
 import FigTreeEvaluator from 'fig-tree-evaluator';
 import { checkDate } from './customFunctions';
 import { useState, useEffect, useMemo } from 'react';
 import extractProperty from 'object-property-extractor';
 import assign from 'object-property-assigner';
 
-interface EvaluatedSchemas {
-  evaluatedSchema: JsonSchema | undefined;
-  evaluatedUiSchema: UISchemaElement | undefined;
-}
-
 type UnevaluatedSchema = { [key: string]: any };
+
+interface ExtendedLayout extends Layout {
+  elements: (UISchemaElement & { text?: string })[];
+}
 
 const fig = new FigTreeEvaluator({ evaluateFullObject: true, functions: { checkDate } });
 
 export const useFigTreeEvaluator = (data: any, schema: UnevaluatedSchema, uischema: UnevaluatedSchema) => {
-  const [evaluatedSchemas, setEvaluatedSchemas] = useState<EvaluatedSchemas>({
-    evaluatedSchema: undefined,
-    evaluatedUiSchema: undefined,
+  const [evaluatedSchema, setEvaluatedSchema] = useState<JsonSchema>();
+  const [evaluatedUiSchema, setEvaluatedUiSchema] = useState<ExtendedLayout>({
+    type: 'VerticalLayout',
+    elements: [{ type: 'Text', text: 'Loading form data...' }],
   });
+  const [schemaEvaluated, setSchemaEvaluated] = useState(false);
 
   const simplifiedRulePaths = useMemo(() => {
     const paths: string[] = [];
@@ -27,16 +28,19 @@ export const useFigTreeEvaluator = (data: any, schema: UnevaluatedSchema, uische
   }, [schema, uischema]);
 
   useEffect(() => {
-    const evaluatedSchema = fig.evaluate(schema, { data }) as Promise<JsonSchema>;
-    const evaluatedUiSchema = fig.evaluate(uischema, { data }) as Promise<UISchemaElement>;
+    if (schemaEvaluated)
+      fig.evaluate(uischema, { data }).then((result) => {
+        replaceRules(result as UISchemaElement, simplifiedRulePaths);
+        setEvaluatedUiSchema(result as Layout);
+      });
 
-    Promise.all([evaluatedSchema, evaluatedUiSchema]).then(([evaluatedSchema, evaluatedUiSchema]) => {
-      replaceRules(evaluatedUiSchema, simplifiedRulePaths);
-      setEvaluatedSchemas({ evaluatedSchema, evaluatedUiSchema });
+    fig.evaluate(schema, { data }).then((result) => {
+      setEvaluatedSchema(result as JsonSchema);
+      setSchemaEvaluated(true);
     });
-  }, [data]);
+  }, [data, simplifiedRulePaths, schemaEvaluated]);
 
-  return evaluatedSchemas;
+  return { evaluatedSchema, evaluatedUiSchema };
 };
 
 const isObject = (value: unknown): value is object => value instanceof Object && value !== null;

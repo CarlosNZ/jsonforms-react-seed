@@ -21,7 +21,7 @@
               "parameters": { "country": { "operator": "getData", "property": "country" } }
             },
             "returnProperty": "data",
-            "fallback": ["Loading"]
+            "fallback": ["Loading cities, please wait..."]
           },
           "valueIfFalse": ["Please select a country first"]
         }

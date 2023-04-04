@@ -57,7 +57,7 @@ const App = () => {
   const classes = useStyles();
   const [data, setData] = useState<any>(initialData);
   const stringifiedData = useMemo(() => JSON.stringify(data, null, 2), [data]);
-  const { evaluatedSchema, evaluatedUiSchema } = useFigTreeEvaluator(data, schema, uischema);
+  const { evaluatedSchema = {}, evaluatedUiSchema } = useFigTreeEvaluator(data, schema, uischema);
 
   const clearData = () => {
     setData({});
