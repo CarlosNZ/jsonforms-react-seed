@@ -19,6 +19,7 @@ export const useFigTreeEvaluator = (data: any, schema: UnevaluatedSchema, uische
     type: 'VerticalLayout',
     elements: [{ type: 'Text', text: 'Loading form data...' }],
   });
+  // This value prevents the form rendering with an empty schema on first load, otherwise it's just full of "no applicable renderer" errors
   const [schemaEvaluated, setSchemaEvaluated] = useState(false);
 
   const simplifiedRulePaths = useMemo(() => {
