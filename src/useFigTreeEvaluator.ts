@@ -1,5 +1,7 @@
+/** @format */
+
 import { JsonSchema, Layout, UISchemaElement } from '@jsonforms/core';
-import FigTreeEvaluator from 'fig-tree-evaluator';
+import { FigTreeEvaluator } from 'fig-tree-evaluator';
 import { checkDate } from './customFunctions';
 import { useState, useEffect, useMemo } from 'react';
 import extractProperty from 'object-property-extractor';
