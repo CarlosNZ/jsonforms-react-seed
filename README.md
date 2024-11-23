@@ -4,8 +4,9 @@ Based on [JSON Forms React Seed App](https://github.com/eclipsesource/jsonforms-
 
 A published demo of this repo is available at https://carlosnz.github.io/jsonforms-with-figtree-demo.
 
-- Run `yarn install` (or `npm` equivalent) to install the dependencies
-- Run `yarn start` (or `npm start`) to launch the demo locally
+- Execute `npm ci` to install the prerequisites. If you want to have the latest released versions use `npm install`.
+- Execute `npm run build` to build the application.
+- Execute `npm start` to start the application.
 
 Please see [FigTree documentation](https://github.com/CarlosNZ/fig-tree-evaluator) for detailed information on how to create FigTree expressions.
 
