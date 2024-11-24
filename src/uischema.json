@@ -16,7 +16,11 @@
         {
           "type": "Control",
           "scope": "#/properties/city",
-          "visible": { "$getData": "country", "fallback": false, "outputType": "bool" }
+          "visible": {
+            "$getData": "country",
+            "fallback": false,
+            "outputType": "bool"
+          }
         },
         {
           "type": "Text",
@@ -47,11 +51,18 @@
           "type": "Text",
           "text": {
             "$?": {
-              "condition": { "$>": [{ "$count": { "$getData": "multiSelect", "fallback": [] } }, 0] },
+              "condition": {
+                "$>": [
+                  { "$count": { "$getData": "multiSelect", "fallback": [] } },
+                  0
+                ]
+              },
               "valueIfTrue": {
                 "$stringSubstitution": {
                   "string": "You have selected %1 items",
-                  "replacements": [{ "$count": { "$getData": "multiSelect" }, "fallback": 0 }]
+                  "replacements": [
+                    { "$count": { "$getData": "multiSelect" }, "fallback": 0 }
+                  ]
                 }
               },
               "valueIfFalse": "Please select some items"
@@ -126,7 +137,11 @@
                 {
                   "type": "Control",
                   "scope": "#/properties/date",
-                  "$isEnabled": { "$getData": "mealChoice", "fallback": false, "outputType": "bool" },
+                  "$isEnabled": {
+                    "$getData": "mealChoice",
+                    "fallback": false,
+                    "outputType": "bool"
+                  },
                   "label": {
                     "$?": {
                       "condition": "$isEnabled",
@@ -147,19 +162,71 @@
                           "match": {
                             "operator": "customFunctions",
                             "functionPath": "checkDate",
-                            "args": [{ "operator": "getData", "property": "date" }]
+                            "args": [
+                              { "operator": "getData", "property": "date" }
+                            ]
                           },
-                          "branches": { "0": "today", "1": "in the future", "-1": "in the past" }
+                          "branches": {
+                            "0": "today",
+                            "1": "in the future",
+                            "-1": "in the past"
+                          }
                         }
                       ]
                     },
                     "fallback": ""
                   },
-                  "visible": { "operator": "getData", "property": "date", "fallback": false, "outputType": "bool" }
+                  "visible": {
+                    "operator": "getData",
+                    "property": "date",
+                    "fallback": false,
+                    "outputType": "bool"
+                  }
                 }
               ]
             }
           ]
+        }
+      ]
+    },
+    {
+      "type": "Group",
+      "elements": [
+        {
+          "type": "Text",
+          "text": "Autocomplete/Search"
+        },
+        {
+          "type": "Text",
+          "text": "Start typing to search for cities worldwide"
+        },
+        {
+          "type": "Autocomplete",
+          "scope": "#/properties/globalCity",
+          "label": "Search cities...",
+          "options": {
+            "searchTextPath": "globalCitySearchText",
+            "noResultsText": "No results found",
+            "options": {
+              "$mapObjects": [
+                {
+                  "$get": {
+                    "url": "https://api.thecompaniesapi.com/v2/locations/cities",
+                    "parameters": {
+                      "search": {
+                        "$getData": {
+                          "path": "globalCitySearchText"
+                        }
+                      }
+                    },
+                    "returnProperty": "cities",
+                    "fallback": []
+                  }
+                },
+                { "key": "code", "label": "code", "value": "code" }
+              ]
+            }
+          }
         }
       ]
     }

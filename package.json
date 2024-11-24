@@ -10,9 +10,13 @@
     "@mui/icons-material": "^6.1.0",
     "@mui/lab": "6.0.0-beta.9",
     "@mui/material": "^6.1.0",
+    "@mui/styles": "^6.1.8",
     "@mui/x-date-pickers": "^7.17.0",
+    "fig-tree-evaluator": "^2.18.1",
+    "object-property-assigner": "^1.3.1",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "use-debounce": "^10.0.4"
   },
   "devDependencies": {
     "@testing-library/react": "^16.0.0",

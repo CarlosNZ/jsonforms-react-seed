@@ -6,13 +6,17 @@ import Typography from '@mui/material/Typography';
 import './App.css';
 import schema from './schema.json';
 import uischema from './uischema.json';
-import { materialCells, materialRenderers } from '@jsonforms/material-renderers';
+import {
+  materialCells,
+  materialRenderers,
+} from '@jsonforms/material-renderers';
 import RatingControl from './components/RatingControl';
 import ratingControlTester from './ratingControlTester';
 import TextDisplay, { textTester } from './TextDisplay';
 import { makeStyles } from '@mui/styles';
 import { useFigTreeEvaluator } from './useFigTreeEvaluator';
 import { Link } from '@mui/material';
+import Autocomplete, { autocompleteTester } from './Autocomplete';
 
 const useStyles = makeStyles({
   container: {
@@ -51,13 +55,18 @@ const renderers = [
   //register custom renderers
   { tester: ratingControlTester, renderer: RatingControl },
   { tester: textTester, renderer: TextDisplay },
+  { tester: autocompleteTester, renderer: Autocomplete },
 ];
 
 const App = () => {
   const classes = useStyles();
   const [data, setData] = useState<any>(initialData);
   const stringifiedData = useMemo(() => JSON.stringify(data, null, 2), [data]);
-  const { evaluatedSchema = {}, evaluatedUiSchema } = useFigTreeEvaluator(data, schema, uischema);
+  const { evaluatedSchema = {}, evaluatedUiSchema } = useFigTreeEvaluator(
+    data,
+    schema,
+    uischema,
+  );
 
   const clearData = () => {
     setData({});
@@ -65,28 +74,38 @@ const App = () => {
 
   return (
     <Fragment>
-      <div className='App'>
-        <header className='App-header'>
+      <div className="App">
+        <header className="App-header">
           {/* <img src={logo} className='App-logo' alt='logo' /> */}
-          <h1 className='App-title'>Welcome to JSON Forms with React</h1>
-          <p className='App-intro'>
+          <h1 className="App-title">Welcome to JSON Forms with React</h1>
+          <p className="App-intro">
             Enhanced with{' '}
-            <Link href='https://github.com/CarlosNZ/fig-tree-evaluator' target='_blank'>
+            <Link
+              href="https://github.com/CarlosNZ/fig-tree-evaluator"
+              target="_blank">
               FigTree Evaluator
             </Link>
           </p>
         </header>
       </div>
 
-      <Grid container justifyContent={'center'} spacing={1} className={classes.container}>
+      <Grid
+        container
+        justifyContent={'center'}
+        spacing={1}
+        className={classes.container}>
         <Grid item sm={6}>
           <Typography variant={'h4'} className={classes.title}>
             Bound data
           </Typography>
           <div className={classes.dataContent}>
-            <pre id='boundData'>{stringifiedData}</pre>
+            <pre id="boundData">{stringifiedData}</pre>
           </div>
-          <Button className={classes.resetButton} onClick={clearData} color='primary' variant='contained'>
+          <Button
+            className={classes.resetButton}
+            onClick={clearData}
+            color="primary"
+            variant="contained">
             Clear data
           </Button>
         </Grid>
@@ -105,9 +124,11 @@ const App = () => {
             />
           </div>
         </Grid>
-        <Typography fontSize='80%'>
+        <Typography fontSize="80%">
           Repository for this demo:{' '}
-          <Link href='https://github.com/CarlosNZ/jsonforms-with-figtree-demo' target='_blank'>
+          <Link
+            href="https://github.com/CarlosNZ/jsonforms-with-figtree-demo"
+            target="_blank">
             Github
           </Link>
         </Typography>

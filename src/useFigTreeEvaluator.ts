@@ -2,7 +2,7 @@
 
 import { JsonSchema, Layout, UISchemaElement } from '@jsonforms/core';
 import { FigTreeEvaluator } from 'fig-tree-evaluator';
-import { checkDate } from './customFunctions';
+import { checkDate, mapObjects } from './customFunctions';
 import { useState, useEffect, useMemo } from 'react';
 import extractProperty from 'object-property-extractor';
 import assign from 'object-property-assigner';
@@ -13,9 +13,16 @@ interface ExtendedLayout extends Layout {
   elements: (UISchemaElement & { text?: string })[];
 }
 
-const fig = new FigTreeEvaluator({ evaluateFullObject: true, functions: { checkDate } });
+const fig = new FigTreeEvaluator({
+  evaluateFullObject: true,
+  functions: { checkDate, mapObjects },
+});
 
-export const useFigTreeEvaluator = (data: any, schema: UnevaluatedSchema, uischema: UnevaluatedSchema) => {
+export const useFigTreeEvaluator = (
+  data: any,
+  schema: UnevaluatedSchema,
+  uischema: UnevaluatedSchema,
+) => {
   const [evaluatedSchema, setEvaluatedSchema] = useState<JsonSchema>();
   const [evaluatedUiSchema, setEvaluatedUiSchema] = useState<ExtendedLayout>({
     type: 'VerticalLayout',
@@ -32,12 +39,12 @@ export const useFigTreeEvaluator = (data: any, schema: UnevaluatedSchema, uische
 
   useEffect(() => {
     if (schemaEvaluated)
-      fig.evaluate(uischema, { data }).then((result) => {
+      fig.evaluate(uischema, { data }).then(result => {
         replaceRules(result as UISchemaElement, simplifiedRulePaths);
         setEvaluatedUiSchema(result as Layout);
       });
 
-    fig.evaluate(schema, { data }).then((result) => {
+    fig.evaluate(schema, { data }).then(result => {
       setEvaluatedSchema(result as JsonSchema);
       setSchemaEvaluated(true);
     });
@@ -46,11 +53,18 @@ export const useFigTreeEvaluator = (data: any, schema: UnevaluatedSchema, uische
   return { evaluatedSchema, evaluatedUiSchema };
 };
 
-const isObject = (value: unknown): value is object => value instanceof Object && value !== null;
+const isObject = (value: unknown): value is object =>
+  value instanceof Object && value !== null;
 
-const traverseSchema = (schema: UnevaluatedSchema | UnevaluatedSchema[], paths: string[], currentPath: string) => {
+const traverseSchema = (
+  schema: UnevaluatedSchema | UnevaluatedSchema[],
+  paths: string[],
+  currentPath: string,
+) => {
   if (Array.isArray(schema)) {
-    schema.forEach((elem, idx) => traverseSchema(elem, paths, `${currentPath}[${idx}]`));
+    schema.forEach((elem, idx) =>
+      traverseSchema(elem, paths, `${currentPath}[${idx}]`),
+    );
     return;
   }
 
@@ -69,8 +83,9 @@ const traverseSchema = (schema: UnevaluatedSchema | UnevaluatedSchema[], paths: 
 };
 
 const replaceRules = (schema: UISchemaElement, paths: string[]) => {
-  const rules: Map<string, { visible?: boolean; enabled?: boolean }> = new Map();
-  paths.forEach((path) => {
+  const rules: Map<string, { visible?: boolean; enabled?: boolean }> =
+    new Map();
+  paths.forEach(path => {
     const value = extractProperty(schema, path);
 
     const matches = path.match(/(^.+)\.(enabled|visible)$/);
@@ -86,16 +101,18 @@ const replaceRules = (schema: UISchemaElement, paths: string[]) => {
       enabled && visible
         ? 'SHOW'
         : enabled && !visible
-        ? 'HIDE'
-        : !enabled && visible
-        ? 'DISABLE'
-        : !enabled && !visible
-        ? 'HIDE'
-        : null;
+          ? 'HIDE'
+          : !enabled && visible
+            ? 'DISABLE'
+            : !enabled && !visible
+              ? 'HIDE'
+              : null;
     // This is a hacky way to circumvent the limitations of JsonForms rules --
     // we're intentionally supplying an invalid condition so that it "falls
     // through" and always returns `true` and we rely on the `ruleType` being
     // changed dynamically instead
-    if (ruleType) assign(schema, basePath + '.rule', { effect: ruleType, condition: true });
+    if (ruleType)
+      // @ts-ignore
+      assign(schema, basePath + '.rule', { effect: ruleType, condition: true });
   });
 };
