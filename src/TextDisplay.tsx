@@ -2,30 +2,26 @@
 Simple component for displaying text information in JSON Forms
 */
 
-import { JsonSchema, UISchemaElement, rankWith, uiTypeIs } from '@jsonforms/core';
+import {
+  ControlElement,
+  ControlProps,
+  rankWith,
+  uiTypeIs,
+} from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import { Typography } from '@mui/material';
 
-interface TextDisplayProps {
-  data: any;
-  path: string;
-  schema: JsonSchema;
-  uischema: UISchemaElement & { text: string };
-  visible: boolean;
-}
-
-const TextDisplay = (props: TextDisplayProps) => {
-  const { uischema, visible } = props;
-  return visible ? (
-    <div>
-      <Typography>{uischema.text}</Typography>
-    </div>
-  ) : null;
+const TextDisplay = (props: ControlProps) => {
+  const { uischema, visible } = props as ControlProps & {
+    uischema: ControlElement & { text: string };
+  };
+  const { options } = uischema;
+  return visible ? <Typography {...options}>{uischema.text}</Typography> : null;
 };
 
 export default withJsonFormsControlProps(TextDisplay as any);
 
 export const textTester = rankWith(
   4, //increase rank as needed
-  uiTypeIs('Text')
+  uiTypeIs('Text'),
 );

@@ -8,14 +8,7 @@ import { Autocomplete as MuiAutocomplete, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
-interface AutocompleteOptions extends ControlProps {
-  searchTextPath: string;
-  options?: string[];
-  noResultsText?: string;
-  minChars?: number;
-}
-
-const Autocomplete = (props: AutocompleteOptions) => {
+const Autocomplete = (props: ControlProps) => {
   const { uischema, visible, handleChange, path, label, data } = props;
   const {
     searchTextPath,
@@ -23,7 +16,6 @@ const Autocomplete = (props: AutocompleteOptions) => {
     noResultsText,
     minChars = 3,
   } = uischema?.options ?? {};
-  console.log('DATA', data);
   const [searchText, setSearchText] = useState('');
   const [displayOptions, setDisplayOptions] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -34,18 +26,14 @@ const Autocomplete = (props: AutocompleteOptions) => {
       handleChange(path, undefined);
       setLoading(true);
     }
-    console.log('VALUE', value);
-  }, 1000);
+  }, 500);
 
   useEffect(() => {
     setLoading(false);
     if (options.length > 0) setDisplayOptions(options);
   }, [options]);
 
-  console.log('loading', loading);
-
   const handleInput = (text: string) => {
-    console.log('TExt', text);
     setSearchText(text);
     setDisplayOptions([]);
     if (text.length >= minChars) {
@@ -54,12 +42,9 @@ const Autocomplete = (props: AutocompleteOptions) => {
     debounce(text);
   };
 
-  console.log('displayOptions', displayOptions);
-
   return visible ? (
     <MuiAutocomplete
       options={displayOptions}
-      // options={[{ label: 'Text value', value: 1, key: 'abc' }]}
       value={data ?? searchText}
       renderInput={params => (
         <TextField
@@ -68,8 +53,19 @@ const Autocomplete = (props: AutocompleteOptions) => {
           onChange={e => handleInput(e.target.value)}
         />
       )}
+      renderOption={(props, option) => {
+        return (
+          <li {...props} key={option.key}>
+            {option.label}
+          </li>
+        );
+      }}
       onChange={(_, data) => {
-        handleChange(path, data);
+        setSearchText('');
+        if (typeof data === 'object' && data !== null && 'value' in data)
+          handleChange(path, data.value);
+        else handleChange(path, data);
+        handleChange(searchTextPath, undefined);
       }}
       noOptionsText={
         searchText.length < minChars

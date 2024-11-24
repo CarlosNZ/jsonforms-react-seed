@@ -194,11 +194,13 @@
       "elements": [
         {
           "type": "Text",
-          "text": "Autocomplete/Search"
+          "text": "Autocomplete/Search",
+          "options": { "variant": "h4" }
         },
         {
           "type": "Text",
-          "text": "Start typing to search for cities worldwide"
+          "text": "An example auto-complete JSONForms renderer. It uses FigTree to dynamically generate a list of options based on user input.",
+          "options": { "sx": { "fontStyle": "italic", "fontSize": "90%" } }
         },
         {
           "type": "Autocomplete",
@@ -223,7 +225,11 @@
                     "fallback": []
                   }
                 },
-                { "key": "code", "label": "code", "value": "code" }
+                {
+                  "key": "${code}",
+                  "label": "${name}, ${state.name}, ${country.name}",
+                  "value": "${name}, ${state.name}, ${country.name}"
+                }
               ]
             }
           }
