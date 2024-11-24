@@ -29,11 +29,7 @@ export const substituteValues = (
   const getObjectProperty = (_: string, __: string, property: string) => {
     if (property === '0' && index !== undefined) return String(index + 1);
     if (typeof data !== 'object') return data;
-    let value = extractProperty(
-      data,
-      property,
-      `Can't find property: ${property}`,
-    );
+    let value = extractProperty(data, property, '');
     return value ?? '';
   };
 
